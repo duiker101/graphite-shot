@@ -12,6 +12,13 @@ body {
 	height: 100vh;
 }
 
+canvas{
+	image-rendering: optimizeSpeed;
+	image-rendering: crisp-edges;
+	image-rendering: -moz-crisp-edges;
+	image-rendering: -o-crisp-edges;
+	-ms-interpolation-mode: nearest-neighbor;
+}
 #root {
 	display: flex;
 	align-items: center;

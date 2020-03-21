@@ -36,7 +36,6 @@ export const useImageColor = (
 	useEffect(() => {
 		if (!image) return;
 		image.onload = () => {
-			console.log("onload", canvas, image);
 			if (!canvas || !image) return;
 			let ctx = canvas.getContext("2d");
 			if (!ctx) return;
@@ -44,12 +43,16 @@ export const useImageColor = (
 			const w = image.width;
 			const h = image.height;
 
-			canvas.width = w;
-			canvas.height = h;
+			// apply scaling based on pixel ratio?
+			// todo review this
+			canvas.width = w / window.devicePixelRatio;
+			canvas.height = h / window.devicePixelRatio;
 
-			ctx.drawImage(image, 0, 0);
+			(ctx as any).mozImageSmoothingEnabled = false;
+			(ctx as any).imageSmoothingEnabled = false;
+			ctx.drawImage(image, 0, 0, w, h, 0, 0, canvas.width, canvas.height);
 
-			let {data} = ctx.getImageData(0, 0, w, h);
+			let {data} = ctx.getImageData(0, 0, canvas.width, canvas.height);
 			const colors: {[key: string]: number} = {};
 
 			for (let i = 0, n = data.length; i < n; i += 4) {

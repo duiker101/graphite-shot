@@ -1,27 +1,31 @@
-import React, {useEffect, useMemo, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import styled from "styled-components";
 import {useImageColor, usePastedImage} from "./hooks";
-import ColorPicker from "./ColorPicker";
 import Dropzone from "./Dropzone";
+import Toolbar from "./Toolbar";
 
 const Wrapper = styled.div`
 	min-width: 400px;
 `;
 
-const Content = styled.div<{bg: string}>`
+/**
+ * This border element is needed so that it will not be saved in the image
+ * and the result will not have rounded corners
+ */
+const Border = styled.div`
 	border: 2px solid white;
-	margin: auto;
 	border-radius: 4px;
+	overflow: hidden;
+`;
+
+const Content = styled.div<{bg: string}>`
+	margin: auto;
 	padding: 10px;
 	background: ${p => p.bg};
 	padding: 64px;
 	box-sizing: border-box;
 	//resize: both;
 	//overflow: auto;
-`;
-
-const Toolbar = styled.div`
-	display: flex;
 `;
 
 const Window = styled.div<{bg: string}>`
@@ -54,55 +58,40 @@ export default () => {
 	const imageColor = useImageColor(canvas?.current, image ?? null);
 	const [bgColor, setBgColor] = useState("cadetblue");
 	const [windowColor, setWindowColor] = useState("#263238");
+	const contentRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		if (imageColor) setWindowColor(imageColor);
 	}, [imageColor]);
 
-	const windowPalette = useMemo(() => {
-		const c = ["#3D7BC7", "#17826D", "#F7EBD1", "#DFAC5D", "#44B87E"];
-		if (imageColor) c.unshift(imageColor);
-		return c;
-	}, [imageColor]);
-
 	return (
 		<Wrapper>
-			<Toolbar>
-				<ColorPicker
-					color={bgColor}
-					onChange={setBgColor}
-					palette={[
-						"#3D7BC7",
-						"#17826D",
-						"#F7EBD1",
-						"#DFAC5D",
-						"#44B87E",
-					]}
-				/>
-				<ColorPicker
-					color={windowColor}
-					onChange={setWindowColor}
-					palette={windowPalette}
-				/>
-			</Toolbar>
-			<Content bg={bgColor}>
-				<Window bg={windowColor}>
-					<Header>
-						<Dot color={"#FF6259"} />
-						<Dot color={"#FFBF2F"} />
-						<Dot color={"#29CE42"} />
-					</Header>
-					<Dropzone
-						hasImage={!!image}
-						onImage={image => setImage(image)}>
-						<canvas
-							ref={canvas}
-							style={{display: !!image ? "initial" : "none"}}
-						/>
-						{/*{image}*/}
-					</Dropzone>
-				</Window>
-			</Content>
+			<Toolbar
+				{...{bgColor, windowColor, imageColor}}
+				content={contentRef.current}
+				onBgColor={setBgColor}
+				onWindowColor={setWindowColor}
+			/>
+
+			<Border>
+				<Content bg={bgColor} ref={contentRef as any}>
+					<Window bg={windowColor}>
+						<Header>
+							<Dot color={"#FF6259"} />
+							<Dot color={"#FFBF2F"} />
+							<Dot color={"#29CE42"} />
+						</Header>
+						<Dropzone
+							hasImage={!!image}
+							onImage={image => setImage(image)}>
+							<canvas
+								ref={canvas}
+								style={{display: !!image ? "initial" : "none"}}
+							/>
+						</Dropzone>
+					</Window>
+				</Content>
+			</Border>
 		</Wrapper>
 	);
 };

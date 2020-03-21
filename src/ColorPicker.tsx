@@ -13,6 +13,10 @@ const Button = styled.div<{color: string}>`
 	height: 30px;
 	width: 30px;
 	margin: 5px;
+	cursor: pointer;
+	&:hover {
+		filter:brightness(1.4);
+	}
 `;
 
 const Popover = styled.div`
