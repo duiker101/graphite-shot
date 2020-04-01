@@ -13,6 +13,7 @@ There are quite a few tools to create nice looking images from code. Some exampl
  #### Features
  
  - Drop, Paste or use dialog to select your image.
+ - Add windows horizontally and vertically
  - Automatically choose the window color based on the most common color of the image
  - Change window and background colors
 

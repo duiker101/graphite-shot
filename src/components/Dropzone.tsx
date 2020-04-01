@@ -16,6 +16,7 @@ const Placeholder = styled.div`
 	align-items: center;
 	justify-content: center;
 	display: flex;
+	padding:32px;
 `;
 
 const Cover = styled.div`
