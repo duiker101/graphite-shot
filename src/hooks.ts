@@ -11,7 +11,7 @@ export const usePastedImage = (): [
 			const items = data?.items || [];
 
 			for (let item of items) {
-				if (item.type.indexOf("image") == -1) continue;
+				if (item.type.indexOf("image") === -1) continue;
 				const blob = item.getAsFile();
 				let img = new Image();
 				let URLObj = window.URL || window.webkitURL;

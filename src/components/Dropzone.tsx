@@ -49,7 +49,7 @@ export default ({children, onImage, hasImage}: PropsWithChildren<Props>) => {
 			reader.readAsDataURL(file);
 			return;
 		}
-	}, []);
+	}, [onImage]);
 
 	const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop});
 

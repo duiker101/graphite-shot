@@ -112,19 +112,19 @@ export default ({
 					/>
 				))}
 				<Button onClick={() => dispatch(windowAdd())}>
-					<img src={addImg} />
+					<img alt={""} src={addImg} />
 				</Button>
 				{Object.entries(windows).length > 1 && (
 					<DirectionButton
 						horizontal={horizontal}
 						onClick={() => onDirection(!horizontal)}>
-						<img src={directionImg} />
+						<img alt={""} src={directionImg} />
 					</DirectionButton>
 				)}
 			</Pickers>
 			<div>
 				<Button onClick={save}>
-					<img src={downloadImg} />
+					<img alt={""} src={downloadImg} />
 				</Button>
 			</div>
 		</Wrapper>

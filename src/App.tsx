@@ -1,10 +1,8 @@
-import React, {useReducer, useRef, useState} from "react";
+import React, {useRef, useState} from "react";
 import styled from "styled-components";
 import Toolbar from "./components/Toolbar";
 import Window from "./components/Window";
-import {useDispatch} from "react-redux";
 import {useWindows} from "./store/windows/hooks";
-import {windowAdd} from "./store/windows/actions";
 
 const Wrapper = styled.div`
 	min-width: 200px;
