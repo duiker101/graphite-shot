@@ -16,7 +16,7 @@ const Placeholder = styled.div`
 	align-items: center;
 	justify-content: center;
 	display: flex;
-	padding:32px;
+	padding: 32px;
 `;
 
 const Cover = styled.div`
@@ -29,27 +29,28 @@ const Cover = styled.div`
 `;
 
 interface Props {
-	onImage: (image: HTMLImageElement) => void;
+	onImage: (image: string) => void;
 	hasImage: boolean;
 }
 
 export default ({children, onImage, hasImage}: PropsWithChildren<Props>) => {
-	const onDrop = useCallback(acceptedFiles => {
-		for (let file of acceptedFiles) {
-			const reader = new FileReader();
-			reader.addEventListener(
-				"load",
-				() => {
-					let img = new Image();
-					img.src = reader.result as string;
-					onImage(img);
-				},
-				false
-			);
-			reader.readAsDataURL(file);
-			return;
-		}
-	}, [onImage]);
+	const onDrop = useCallback(
+		acceptedFiles => {
+			for (let file of acceptedFiles) {
+				const reader = new FileReader();
+				reader.addEventListener(
+					"load",
+					() => {
+						onImage(reader.result as string);
+					},
+					false
+				);
+				reader.readAsDataURL(file);
+				return;
+			}
+		},
+		[onImage]
+	);
 
 	const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop});
 

@@ -1,14 +1,20 @@
-import React, {useMemo} from "react";
+import React, {useMemo, useState} from "react";
 import styled from "styled-components";
-import ColorPicker from "./ColorPicker";
-import downloadImg from "../icons/download.svg";
-import addImg from "../icons/add.svg";
-import directionImg from "../icons/direction.svg";
+import ColorPicker from "../inputs/ColorPicker";
+import downloadImg from "../../icons/download.svg";
+import addImg from "../../icons/add.svg";
+import directionImg from "../../icons/direction.svg";
 import htmlToImage from "html-to-image";
 import {saveAs} from "file-saver";
-import {windowAdd, windowSetColor} from "../store/windows/actions";
 import {useDispatch} from "react-redux";
-import {useWindows} from "../store/windows/hooks";
+import {
+	useWindows,
+	addWindow,
+	setWindowColor,
+	useWindowState,
+	setWindowScaling,
+} from "../../store/windows";
+import {AppDispatch} from "../../store";
 
 const Wrapper = styled.div`
 	display: flex;
@@ -17,6 +23,13 @@ const Wrapper = styled.div`
 
 const Pickers = styled.div`
 	display: flex;
+	align-items: center;
+`;
+
+const Divider = styled.div`
+	width: 1px;
+	height: 10px;
+	background: white;
 `;
 
 const Button = styled.div`
@@ -61,8 +74,10 @@ export default ({
 	horizontal,
 	onDirection,
 }: Props) => {
-	const dispatch = useDispatch();
+	const dispatch: AppDispatch = useDispatch();
 	const windows = useWindows();
+	const selectedWindowId = useWindowState(s => s.selected);
+	const selectedWindow = windows[selectedWindowId];
 
 	const save = () => {
 		if (!content) return;
@@ -90,6 +105,16 @@ export default ({
 		];
 	}, [windows]);
 
+	const scales = [0.25, 0.5, 1, 2, 4];
+	const onScalingChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+		dispatch(
+			setWindowScaling({
+				id: selectedWindowId,
+				scale: parseFloat(e.target.value),
+			})
+		);
+	};
+
 	return (
 		<Wrapper>
 			<Pickers>
@@ -104,16 +129,6 @@ export default ({
 						"#44B87E",
 					]}
 				/>
-				{Object.entries(windows).map(([id, w]) => (
-					<ColorPicker
-						color={w.color}
-						onChange={c => dispatch(windowSetColor(id, c))}
-						palette={palette}
-					/>
-				))}
-				<Button onClick={() => dispatch(windowAdd())}>
-					<img alt={""} src={addImg} />
-				</Button>
 				{Object.entries(windows).length > 1 && (
 					<DirectionButton
 						horizontal={horizontal}
@@ -121,6 +136,27 @@ export default ({
 						<img alt={""} src={directionImg} />
 					</DirectionButton>
 				)}
+				<Button onClick={() => dispatch(addWindow())}>
+					<img alt={""} src={addImg} />
+				</Button>
+				<Divider />
+				<ColorPicker
+					color={selectedWindow.color}
+					onChange={c =>
+						dispatch(
+							setWindowColor({id: selectedWindowId, color: c})
+						)
+					}
+					palette={palette}
+				/>
+
+				<select
+					onChange={onScalingChange}
+					value={selectedWindow.scaling}>
+					{scales.map(s => (
+						<option key={s}>{s}</option>
+					))}
+				</select>
 			</Pickers>
 			<div>
 				<Button onClick={save}>

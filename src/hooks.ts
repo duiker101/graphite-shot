@@ -1,10 +1,10 @@
 import {Dispatch, SetStateAction, useEffect, useState} from "react";
 
 export const usePastedImage = (): [
-	HTMLImageElement | undefined,
-	Dispatch<SetStateAction<HTMLImageElement | undefined>>
+	string | undefined,
+	Dispatch<SetStateAction<string | undefined>>
 ] => {
-	const [image, setImage] = useState<HTMLImageElement>();
+	const [imageData, setImageData] = useState<string>();
 	useEffect(() => {
 		const listener = (e: Event) => {
 			const {clipboardData: data} = e as ClipboardEvent;
@@ -13,10 +13,8 @@ export const usePastedImage = (): [
 			for (let item of items) {
 				if (item.type.indexOf("image") === -1) continue;
 				const blob = item.getAsFile();
-				let img = new Image();
 				let URLObj = window.URL || window.webkitURL;
-				img.src = URLObj.createObjectURL(blob);
-				setImage(img);
+				setImageData(URLObj.createObjectURL(blob));
 				return;
 			}
 		};
@@ -25,5 +23,5 @@ export const usePastedImage = (): [
 		return () => window.removeEventListener("paste", listener);
 	}, []);
 
-	return [image, setImage];
+	return [imageData, setImageData];
 };
