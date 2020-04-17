@@ -15,7 +15,6 @@ const Wrapper = styled.div`
 const Border = styled.div`
 	border: 2px solid white;
 	border-radius: 4px;
-	overflow: hidden;
 `;
 
 const Content = styled.div<{bg: string; horizontal: boolean}>`
@@ -52,7 +51,7 @@ export default () => {
 					ref={contentRef as any}
 					horizontal={horizontal}>
 					{Object.entries(windows).map(([id, w]) => (
-						<Window windowId={id} />
+						<Window key={id} windowId={id} />
 					))}
 				</Content>
 			</Border>
