@@ -55,7 +55,7 @@ export default ({children, onImage, hasImage}: PropsWithChildren<Props>) => {
 	const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop});
 
 	return (
-		<Wrapper {...getRootProps()}>
+		<Wrapper {...getRootProps()} tabIndex={1}>
 			<input {...getInputProps()} />
 			{children}
 			{!hasImage && (
