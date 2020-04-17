@@ -1,19 +1,20 @@
-import {createStore, applyMiddleware} from "redux";
-import {composeWithDevTools} from "redux-devtools-extension";
-import thunkMiddleware from "redux-thunk";
-import {combineReducers} from "redux";
-import windows, {WindowsState} from "./windows/reducer";
+import {Action, configureStore, ThunkAction} from "@reduxjs/toolkit";
 
-export interface RootState {
-    windows: WindowsState;
-}
+import rootReducer, {RootState} from "./reducer";
 
-const rootReducer = combineReducers<RootState>({
-    windows,
+const store = configureStore({
+	reducer: rootReducer,
 });
 
-const middleware = applyMiddleware(thunkMiddleware);
+if (process.env.NODE_ENV === "development" && module.hot) {
+	module.hot.accept("./reducer", () => {
+		const newRootReducer = require("./reducer").default;
+		store.replaceReducer(newRootReducer);
+	});
+}
 
-const Index = createStore(rootReducer, composeWithDevTools(middleware));
+export type AppDispatch = typeof store.dispatch;
 
-export default Index;
+export type AppThunk<T> = ThunkAction<T, RootState, unknown, Action<string>>;
+
+export default store;

@@ -1,8 +1,8 @@
 import React, {useRef, useState} from "react";
 import styled from "styled-components";
-import Toolbar from "./components/Toolbar";
+import Toolbar from "./components/toolbar/Toolbar";
 import Window from "./components/Window";
-import {useWindows} from "./store/windows/hooks";
+import {useWindows} from "./store/windows";
 
 const Wrapper = styled.div`
 	min-width: 200px;
@@ -52,7 +52,7 @@ export default () => {
 					ref={contentRef as any}
 					horizontal={horizontal}>
 					{Object.entries(windows).map(([id, w]) => (
-						<Window key={id} windowId={id} />
+						<Window windowId={id} />
 					))}
 				</Content>
 			</Border>

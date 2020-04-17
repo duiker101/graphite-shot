@@ -15,7 +15,7 @@ const Button = styled.div<{color: string}>`
 	margin: 5px;
 	cursor: pointer;
 	&:hover {
-		filter:brightness(1.4);
+		filter: brightness(1.4);
 	}
 `;
 
