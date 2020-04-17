@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from "react";
+import React, {useMemo} from "react";
 import styled from "styled-components";
 import ColorPicker from "../inputs/ColorPicker";
 import downloadImg from "../../icons/download.svg";
