@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from "react";
+import React from "react";
 import styled from "styled-components";
 import ColorPicker from "../inputs/ColorPicker";
 import downloadImg from "../../icons/download.svg";
@@ -7,14 +7,9 @@ import directionImg from "../../icons/direction.svg";
 import htmlToImage from "html-to-image";
 import {saveAs} from "file-saver";
 import {useDispatch} from "react-redux";
-import {
-    useWindows,
-    addWindow,
-    setWindowColor,
-    useWindowState,
-    setWindowScaling,
-} from "../../store/windows";
+import {addWindow, useWindows,} from "../../store/windows";
 import {AppDispatch} from "../../store";
+import SelectionToolbar from "./SelectionToolbar";
 
 const Wrapper = styled.div`
 	display: flex;
@@ -48,123 +43,80 @@ const Button = styled.div`
 	}
 `;
 
-const DirectionButton = styled(Button)<{ horizontal: boolean }>`
+const DirectionButton = styled(Button)<{horizontal: boolean}>`
 	img {
 		transition: transform 200ms ease-in-out;
 		${({horizontal}) =>
-    horizontal &&
-    `
+			horizontal &&
+			`
 			transform: rotate(90deg);
 		`}
 	}
 `;
 
 interface Props {
-    bgColor: string;
-    onBgColor: (color: string) => void;
-    onDirection: (horizontal: boolean) => void;
-    horizontal: boolean;
-    content: HTMLDivElement | null;
+	bgColor: string;
+	onBgColor: (color: string) => void;
+	onDirection: (horizontal: boolean) => void;
+	horizontal: boolean;
+	content: HTMLDivElement | null;
 }
 
 export default ({
-                    bgColor,
-                    onBgColor,
-                    content,
-                    horizontal,
-                    onDirection,
-                }: Props) => {
-    const dispatch: AppDispatch = useDispatch();
-    const windows = useWindows();
-    const selectedWindowId = useWindowState(s => s.selected);
-    const selectedWindow = windows[selectedWindowId];
+	bgColor,
+	onBgColor,
+	content,
+	horizontal,
+	onDirection,
+}: Props) => {
+	const dispatch: AppDispatch = useDispatch();
+	const windows = useWindows();
 
-    const save = () => {
-        if (!content) return;
-        htmlToImage
-            .toPng(content)
-            .then(dataUrl => {
-                saveAs(dataUrl, "graphite.png");
-            })
-            .catch(error => {
-                console.error("oops, something went wrong!", error);
-            });
-    };
+	const save = () => {
+		if (!content) return;
+		htmlToImage
+			.toPng(content)
+			.then(dataUrl => {
+				saveAs(dataUrl, "graphite.png");
+			})
+			.catch(error => {
+				console.error("oops, something went wrong!", error);
+			});
+	};
 
-    const palette = useMemo(() => {
-        const windowColors = [
-            ...new Set(Object.entries(windows).map(([id, w]) => w.color)),
-        ];
-        return [
-            "#3D7BC7",
-            "#17826D",
-            "#F7EBD1",
-            "#DFAC5D",
-            "#44B87E",
-            ...windowColors,
-        ];
-    }, [windows]);
+	return (
+		<Wrapper>
+			<Pickers>
+				<ColorPicker
+					color={bgColor}
+					onChange={onBgColor}
+					palette={[
+						"#3D7BC7",
+						"#17826D",
+						"#F7EBD1",
+						"#DFAC5D",
+						"#44B87E",
+					]}
+				/>
 
-    const scales = [0.5, 1, 2];
-    const onScalingChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        dispatch(
-            setWindowScaling({
-                id: selectedWindowId,
-                scale: parseFloat(e.target.value),
-            })
-        );
-    };
-
-    return (
-        <Wrapper>
-            <Pickers>
-                <ColorPicker
-                    color={bgColor}
-                    onChange={onBgColor}
-                    palette={[
-                        "#3D7BC7",
-                        "#17826D",
-                        "#F7EBD1",
-                        "#DFAC5D",
-                        "#44B87E",
-                    ]}
-                />
-                {Object.entries(windows).length > 1 && (
-                    <DirectionButton
-                        horizontal={horizontal}
-                        onClick={() => onDirection(!horizontal)}>
-                        <img alt={""} src={directionImg}/>
-                    </DirectionButton>
-                )}
-                <Button onClick={() => dispatch(addWindow())}>
-                    <img alt={""} src={addImg}/>
-                </Button>
-                <Divider/>
-                <ColorPicker
-                    color={selectedWindow.color}
-                    onChange={c =>
-                        dispatch(
-                            setWindowColor({id: selectedWindowId, color: c})
-                        )
-                    }
-                    palette={palette}
-                />
-
-                <select
-                    onChange={onScalingChange}
-                    tabIndex={2}
-                    value={selectedWindow.scaling}>
-
-                    {scales.map(s => (
-                        <option key={s}>{s}</option>
-                    ))}
-                </select>
-            </Pickers>
-            <div>
-                <Button onClick={save}>
-                    <img alt={""} src={downloadImg}/>
-                </Button>
-            </div>
-        </Wrapper>
-    );
+				{Object.entries(windows).length > 1 && (
+					<DirectionButton
+						horizontal={horizontal}
+						onClick={() => onDirection(!horizontal)}>
+						<img alt={""} src={directionImg} />
+					</DirectionButton>
+				)}
+				<Button onClick={() => dispatch(addWindow())}>
+					<img alt={""} src={addImg} />
+				</Button>
+				<Divider />
+				<SelectionToolbar />
+			</Pickers>
+			<div>
+				<Button onClick={save}>
+					<img alt={""} src={downloadImg} />
+				</Button>
+			</div>
+		</Wrapper>
+	);
 };

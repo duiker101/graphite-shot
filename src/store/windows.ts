@@ -28,15 +28,17 @@ const slice = createSlice({
 	initialState,
 	reducers: {
 		addWindow(state) {
-			const newId = ++windowIdIndex;
+			const newId = (++windowIdIndex).toString();
 			state.windows[newId] = {
-				id: newId.toString(),
+				id: newId,
 				color: "#263238",
 				scaling: 1 / window.devicePixelRatio,
 			};
+			state.selected = newId;
 		},
 		removeWindow(state, action: PayloadAction<string>) {
 			delete state.windows[action.payload];
+			state.selected = Object.values(state.windows)[0].id;
 		},
 		setWindowImage(
 			state,
@@ -83,4 +85,9 @@ export const useWindows = (): {[id: string]: CodeWindow} => {
 
 export const useWindow = (id: string): CodeWindow => {
 	return useWindowState(s => s.windows[id] ?? null);
+};
+
+export const useSelectedWindow = (): CodeWindow => {
+	const {windows, selected} = useWindowState(s => s);
+	return windows[selected];
 };
