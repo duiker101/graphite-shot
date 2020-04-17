@@ -6,10 +6,10 @@ import {useDispatch} from "react-redux";
 import {processImage} from "../utils/image";
 import Jimp from "jimp";
 import {
-	useWindow,
+	selectWindow,
 	setWindowColor,
 	setWindowImage,
-	selectWindow,
+	useWindow,
 } from "../store/windows";
 import {AppDispatch} from "../store";
 

@@ -7,7 +7,7 @@ import directionImg from "../../icons/direction.svg";
 import htmlToImage from "html-to-image";
 import {saveAs} from "file-saver";
 import {useDispatch} from "react-redux";
-import {addWindow, useWindows,} from "../../store/windows";
+import {addWindow, useWindows} from "../../store/windows";
 import {AppDispatch} from "../../store";
 import SelectionToolbar from "./SelectionToolbar";
 

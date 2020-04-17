@@ -55,6 +55,7 @@ interface Props {
 	color: string;
 	palette?: string[];
 }
+
 export default ({color, onChange, palette}: Props) => {
 	const [open, setOpen] = useState(false);
 

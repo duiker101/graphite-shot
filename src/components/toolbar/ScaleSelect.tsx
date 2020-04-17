@@ -20,7 +20,9 @@ export default () => {
 	return (
 		<select
 			onChange={onScalingChange}
-			tabIndex={2}
+			tabIndex={-1}
+			title={"Image scale"}
+			aria-label={"Image scale"}
 			value={selected.scaling}>
 			{scales.map(s => (
 				<option key={s}>{s}</option>

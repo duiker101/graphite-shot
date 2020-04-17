@@ -3,11 +3,10 @@ import styled from "styled-components";
 import {useDispatch} from "react-redux";
 import ColorPicker from "../inputs/ColorPicker";
 import {
-	addWindow,
+	removeWindow,
 	setWindowColor,
 	useSelectedWindow,
 	useWindows,
-	removeWindow,
 } from "../../store/windows";
 import ScalingSelect from "./ScaleSelect";
 import {ReactComponent as CrossImg} from "../../icons/cross.svg";

@@ -33,7 +33,9 @@
 		"start": "react-scripts start",
 		"build": "react-scripts build",
 		"test": "react-scripts test",
-		"eject": "react-scripts eject"
+		"eject": "react-scripts eject",
+		"checkfmt": "prettier -l \"**/*.{js,json,jsx,ts,tsx}\"",
+		"fmt": "prettier --write \"**/*.{js,json,jsx,ts,tsx}\""
 	},
 	"eslintConfig": {
 		"extends": "react-app"
