@@ -6,7 +6,7 @@ export const processImage = (imageData: string): Promise<[string, Jimp]> => {
 
 		for (let x = 0; x < image.getWidth(); x += 2) {
 			for (let y = 0; y < image.getHeight(); y += 2) {
-				const key = image.getPixelColor(x, y);
+				const key = image.getPixelColour(x, y);
 				colors[key] = colors[key] + 1 || 1;
 			}
 		}
@@ -19,6 +19,11 @@ export const processImage = (imageData: string): Promise<[string, Jimp]> => {
 			["", 0]
 		)[0];
 
-		return ["#" + parseInt(color).toString(16), image];
+		const {r, g, b} = Jimp.intToRGBA(parseInt(color));
+		const hex = [r, g, b]
+			.map(n => n.toString(16).padStart(2, "0"))
+			.join("");
+
+		return ["#" + hex, image];
 	});
 };
