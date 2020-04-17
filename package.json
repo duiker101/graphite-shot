@@ -1,6 +1,6 @@
 {
 	"name": "graphite-shot",
-	"version": "0.1.0",
+	"version": "0.1.2",
 	"license": "MIT",
 	"devDependencies": {
 		"@types/file-saver": "^2.0.1",
