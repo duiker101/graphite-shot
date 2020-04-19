@@ -6,6 +6,7 @@ interface CodeWindow {
 	color: string;
 	image?: string;
 	scaling: number;
+	shadow?: string;
 	id: string;
 }
 
@@ -18,7 +19,7 @@ export interface WindowsState {
 
 const initialState: WindowsState = {
 	windows: {
-		"0": {color: "#263238", id: "0", scaling: 1 / window.devicePixelRatio},
+		"0": {color: "#263238", shadow:"10px 10px 20px #00000066", id: "0", scaling: 1 / window.devicePixelRatio},
 	},
 	selected: "0",
 };
@@ -52,6 +53,12 @@ const slice = createSlice({
 		) {
 			state.windows[id].color = color;
 		},
+		setWindowShadow(
+			state,
+			{payload: {id, shadow}}: PayloadAction<{id: string; shadow: string}>
+		) {
+			state.windows[id].shadow = shadow;
+		},
 		setWindowScaling(
 			state,
 			{payload: {id, scale}}: PayloadAction<{id: string; scale: number}>
@@ -70,7 +77,8 @@ export const {
 	setWindowColor,
 	setWindowImage,
 	selectWindow,
-	setWindowScaling,
+	setWindowShadow,
+	setWindowScaling
 } = slice.actions;
 
 export default slice.reducer;

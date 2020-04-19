@@ -13,10 +13,10 @@ import {
 } from "../store/windows";
 import {AppDispatch} from "../store";
 
-const Wrapper = styled.div<{bg: string}>`
+const Wrapper = styled.div<{bg: string; shadow: string}>`
 	background: ${p => p.bg};
 	border-radius: 10px;
-	box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.4);
+	box-shadow: ${p => p.shadow};
 	min-height: 20px;
 	padding: 8px;
 	display: flex;
@@ -53,7 +53,9 @@ interface Props {
 export default ({windowId}: Props) => {
 	const [srcImage, setSrcImage] = usePastedImage();
 	const dispatch: AppDispatch = useDispatch();
-	const {color: bgColor, image: imageData, scaling} = useWindow(windowId);
+	const {color: bgColor, image: imageData, scaling, shadow} = useWindow(
+		windowId
+	);
 	const [size, setSize] = useState<{
 		width?: number;
 		height?: number;
@@ -78,7 +80,7 @@ export default ({windowId}: Props) => {
 		dispatch(selectWindow(windowId));
 	};
 	return (
-		<Wrapper bg={bgColor} onClick={selected}>
+		<Wrapper bg={bgColor} onClick={selected} shadow={shadow || "none"}>
 			<Header>
 				<Dot color={"#FF6259"} />
 				<Dot color={"#FFBF2F"} />
