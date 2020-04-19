@@ -19,7 +19,12 @@ export interface WindowsState {
 
 const initialState: WindowsState = {
 	windows: {
-		"0": {color: "#263238", shadow:"10px 10px 20px #00000066", id: "0", scaling: 1 / window.devicePixelRatio},
+		"0": {
+			color: "#263238",
+			shadow: "10px 10px 20px #00000066",
+			id: "0",
+			scaling: 1 / window.devicePixelRatio,
+		},
 	},
 	selected: "0",
 };
@@ -33,6 +38,7 @@ const slice = createSlice({
 			state.windows[newId] = {
 				id: newId,
 				color: "#263238",
+				shadow: "10px 10px 20px #00000066",
 				scaling: 1 / window.devicePixelRatio,
 			};
 			state.selected = newId;
@@ -78,7 +84,7 @@ export const {
 	setWindowImage,
 	selectWindow,
 	setWindowShadow,
-	setWindowScaling
+	setWindowScaling,
 } = slice.actions;
 
 export default slice.reducer;
