@@ -13,10 +13,7 @@ body {
 }
 
 #root {
-    display: flex;
-    align-items: center;
-    min-height: 100vh;
-    justify-content: center;
-    overflow: scroll;
     min-width: min-content;
+    min-height: 100vh;
+    height: 100vh;
 }
