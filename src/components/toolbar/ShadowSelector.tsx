@@ -26,8 +26,8 @@ const Button = styled.div`
 
 const TooltipBg = styled.div`
 	padding: 0.3em;
-	background: #2A2A2A;
-	border:1px solid white;
+	background: #2a2a2a;
+	border: 1px solid white;
 `;
 
 export default () => {
@@ -47,8 +47,9 @@ export default () => {
 				<TooltipBg>
 					<ShadowPicker onChange={update} value={selection.shadow} />
 				</TooltipBg>
-			}>
-			<Button></Button>
+			}
+		>
+			{/*<Button></Button>*/}
 		</Tooltip>
 	);
 };

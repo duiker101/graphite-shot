@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import ColorPicker from "../inputs/ColorPicker";
-import downloadImg from "../../icons/download.svg";
-import addImg from "../../icons/add.svg";
-import directionImg from "../../icons/direction.svg";
-import {ReactComponent as CogImg} from "../../icons/cog.svg";
+import DownloadImg from "../../icons/download.svg?react";
+import AddImg from "../../icons/add.svg?react";
+import DirectionImg from "../../icons/direction.svg?react";
+import CogImg from "../../icons/cog.svg?react";
 import {toPng} from "html-to-image";
 import {saveAs} from "file-saver";
 import {useDispatch} from "react-redux";
@@ -109,19 +109,20 @@ export default ({
 					{Object.entries(windows).length > 1 && (
 						<DirectionButton
 							horizontal={horizontal}
-							onClick={() => onDirection(!horizontal)}>
-							<img alt={""} src={directionImg} />
+							onClick={() => onDirection(!horizontal)}
+						>
+							<DirectionImg />
 						</DirectionButton>
 					)}
 					<Button onClick={() => dispatch(addWindow())}>
-						<img alt={""} src={addImg} />
+						<AddImg />
 					</Button>
 					<Divider />
 					<SelectionToolbar />
 				</Pickers>
 				<div>
 					<Button onClick={save}>
-						<img alt={""} src={downloadImg} />
+						<DownloadImg />
 					</Button>
 				</div>
 			</TopBar>

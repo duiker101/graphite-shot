@@ -7,7 +7,7 @@ const Wrapper = styled.div`
 `;
 
 const Button = styled.div<{color: string}>`
-	background: ${p => p.color};
+	background: ${(p) => p.color};
 	border-radius: 2px;
 	border: 1px solid white;
 	height: 30px;
@@ -43,7 +43,7 @@ const Palette = styled.div`
 const Item = styled.div<{color: string}>`
 	width: 12px;
 	height: 12px;
-	background: ${p => p.color};
+	background: ${(p) => p.color};
 	border-radius: 2px;
 	margin: 4px;
 	box-shadow: inset 0px 0px 2px rgba(0, 0, 0, 0.2);

@@ -2,9 +2,14 @@ import React, {useMemo} from "react";
 import styled from "styled-components";
 import {useDispatch} from "react-redux";
 import ColorPicker from "../inputs/ColorPicker";
-import {removeWindow, setWindowColor, useSelectedWindow, useWindows,} from "../../store/windows";
+import {
+	removeWindow,
+	setWindowColor,
+	useSelectedWindow,
+	useWindows,
+} from "../../store/windows";
 import ScalingSelect from "./ScaleSelect";
-import {ReactComponent as CrossImg} from "../../icons/cross.svg";
+import CrossImg from "../../icons/cross.svg";
 import ShadowSelector from "./ShadowSelector";
 
 const Remove = styled.div`
@@ -26,7 +31,6 @@ const Remove = styled.div`
 		background: rgba(200, 200, 200, 0.4);
 	}
 `;
-
 
 export default () => {
 	const dispatch = useDispatch();
@@ -51,7 +55,7 @@ export default () => {
 		<>
 			<ColorPicker
 				color={selection.color}
-				onChange={c =>
+				onChange={(c) =>
 					dispatch(setWindowColor({id: selection.id, color: c}))
 				}
 				palette={palette}

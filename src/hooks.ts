@@ -2,7 +2,7 @@ import {Dispatch, SetStateAction, useEffect, useState} from "react";
 
 export const usePastedImage = (): [
 	string | undefined,
-	Dispatch<SetStateAction<string | undefined>>
+	Dispatch<SetStateAction<string | undefined>>,
 ] => {
 	const [imageData, setImageData] = useState<string>();
 	useEffect(() => {
@@ -12,7 +12,7 @@ export const usePastedImage = (): [
 
 			for (let item of items) {
 				if (item.type.indexOf("image") === -1) continue;
-				const blob = item.getAsFile();
+				const blob = item.getAsFile() as Blob;
 				let URLObj = window.URL || window.webkitURL;
 				setImageData(URLObj.createObjectURL(blob));
 				return;

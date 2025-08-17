@@ -34,7 +34,7 @@ const Border = styled.div`
 const Content = styled.div<{bg: string; horizontal: boolean}>`
 	margin: auto;
 	padding: 10px;
-	background: ${p => p.bg};
+	background: ${(p) => p.bg};
 	padding: 64px;
 	display: grid;
 	grid-auto-flow: ${({horizontal}) => (horizontal ? "column" : "row")};
@@ -54,7 +54,7 @@ export default () => {
 			<Main>
 				<div>
 					<Toolbar
-						onDirection={d => setIsHorizontal(d)}
+						onDirection={(d) => setIsHorizontal(d)}
 						horizontal={horizontal}
 						bgColor={bgColor}
 						onBgColor={setBgColor}
@@ -65,7 +65,8 @@ export default () => {
 						<Content
 							bg={bgColor}
 							ref={contentRef as any}
-							horizontal={horizontal}>
+							horizontal={horizontal}
+						>
 							{Object.entries(windows).map(([id, w]) => (
 								<Window key={id} windowId={id} />
 							))}

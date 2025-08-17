@@ -94,14 +94,14 @@ export function useWindowState(selector: (state: WindowsState) => any) {
 }
 
 export const useWindows = (): {[id: string]: CodeWindow} => {
-	return useWindowState(s => s.windows);
+	return useWindowState((s) => s.windows);
 };
 
 export const useWindow = (id: string): CodeWindow => {
-	return useWindowState(s => s.windows[id] ?? null);
+	return useWindowState((s) => s.windows[id] ?? null);
 };
 
 export const useSelectedWindow = (): CodeWindow => {
-	const {windows, selected} = useWindowState(s => s);
+	const {windows, selected} = useWindowState((s) => s);
 	return windows[selected];
 };

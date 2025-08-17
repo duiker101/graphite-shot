@@ -23,8 +23,9 @@ export default () => {
 			tabIndex={-1}
 			title={"Image scale"}
 			aria-label={"Image scale"}
-			value={selected.scaling}>
-			{scales.map(s => (
+			value={selected.scaling}
+		>
+			{scales.map((s) => (
 				<option key={s}>{s}</option>
 			))}
 		</select>

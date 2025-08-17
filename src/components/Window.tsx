@@ -4,99 +4,99 @@ import Dropzone from "./Dropzone";
 import {usePastedImage} from "../hooks";
 import {useDispatch} from "react-redux";
 import {processImage} from "../utils/image";
-import Jimp from "jimp";
-import {
-	selectWindow,
-	setWindowColor,
-	setWindowImage,
-	useWindow,
-} from "../store/windows";
+import {JimpMime} from "jimp";
+import {selectWindow, setWindowColor, setWindowImage, useWindow,} from "../store/windows";
 import {AppDispatch} from "../store";
 
-const Wrapper = styled.div<{bg: string; shadow: string}>`
-	background: ${p => p.bg};
-	border-radius: 10px;
-	box-shadow: ${p => p.shadow};
-	min-height: 20px;
-	padding: 8px;
-	display: flex;
-	flex-direction: column;
-	border: 1px solid transparent;
-	cursor: pointer;
-	&:hover {
-		border: 1px solid white;
-	}
+const Wrapper = styled.div<{ bg: string; shadow: string }>`
+    background: ${(p) => p.bg};
+    border-radius: 10px;
+    box-shadow: ${(p) => p.shadow};
+    min-height: 20px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid transparent;
+    cursor: pointer;
+
+    &:hover {
+        border: 1px solid white;
+    }
 `;
 
 const Header = styled.div`
-	display: flex;
-	margin-bottom: 8px;
+    display: flex;
+    margin-bottom: 8px;
 `;
 
-const Image = styled.img<{width?: number; height?: number}>`
-	width: ${p => (p.width ? p.width + "px" : "auto")};
-	height: ${p => (p.height ? p.height + "px" : "auto")};
+const Image = styled.img<{ width?: number; height?: number }>`
+    width: ${(p) => (p.width ? p.width + "px" : "auto")};
+    height: ${(p) => (p.height ? p.height + "px" : "auto")};
 `;
 
-const Dot = styled.div<{color: string}>`
-	background: ${p => p.color};
-	width: 12px;
-	height: 12px;
-	border-radius: 50%;
-	margin: 4px;
+const Dot = styled.div<{ color: string }>`
+    background: ${(p) => p.color};
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin: 4px;
 `;
 
 interface Props {
-	windowId: string;
+    windowId: string;
 }
 
 export default ({windowId}: Props) => {
-	const [srcImage, setSrcImage] = usePastedImage();
-	const dispatch: AppDispatch = useDispatch();
-	const {color: bgColor, image: imageData, scaling, shadow} = useWindow(
-		windowId
-	);
-	const [size, setSize] = useState<{
-		width?: number;
-		height?: number;
-	}>({width: undefined, height: undefined});
+    const [srcImage, setSrcImage] = usePastedImage();
+    const dispatch: AppDispatch = useDispatch();
+    const {
+        color: bgColor,
+        image: imageData,
+        scaling,
+        shadow,
+    } = useWindow(windowId);
+    const [size, setSize] = useState<{
+        width?: number;
+        height?: number;
+    }>({width: undefined, height: undefined});
 
-	useEffect(() => {
-		if (!srcImage) return;
+    useEffect(() => {
+        if (!srcImage) return;
 
-		processImage(srcImage).then(([color, image]) => {
-			setSize({width: image.getWidth(), height: image.getHeight()});
-			image.getBase64Async(Jimp.MIME_PNG).then(base => {
-				dispatch(setWindowImage({id: windowId, image: base}));
-			});
-			dispatch(setWindowColor({id: windowId, color}));
-		});
-	}, [srcImage, dispatch, windowId]);
+        processImage(srcImage).then(({color, image}) => {
+            setSize({width: image.width, height: image.height});
+            image.getBase64(JimpMime.png).then((base: any) => {
+                dispatch(setWindowImage({id: windowId, image: base}));
+            });
+            dispatch(setWindowColor({id: windowId, color}));
+        });
+    }, [srcImage, dispatch, windowId]);
 
-	const imgWidth = size.width ? size.width * scaling : undefined;
-	const imgHeight = size.height ? size.height * scaling : undefined;
+    const imgWidth = size.width ? size.width * scaling : undefined;
+    const imgHeight = size.height ? size.height * scaling : undefined;
 
-	const selected = () => {
-		dispatch(selectWindow(windowId));
-	};
-	return (
-		<Wrapper bg={bgColor} onClick={selected} shadow={shadow || "none"}>
-			<Header>
-				<Dot color={"#FF6259"} />
-				<Dot color={"#FFBF2F"} />
-				<Dot color={"#29CE42"} />
-			</Header>
-			<Dropzone
-				hasImage={!!imageData}
-				onImage={image => setSrcImage(image)}>
-				{imageData && (
-					<Image
-						src={imageData}
-						height={imgHeight}
-						width={imgWidth}
-					/>
-				)}
-			</Dropzone>
-		</Wrapper>
-	);
+    const selected = () => {
+        dispatch(selectWindow(windowId));
+    };
+    return (
+        <Wrapper bg={bgColor} onClick={selected} shadow={shadow || "none"}>
+            <Header>
+                <Dot color={"#FF6259"}/>
+                <Dot color={"#FFBF2F"}/>
+                <Dot color={"#29CE42"}/>
+            </Header>
+            <Dropzone
+                hasImage={!!imageData}
+                onImage={(image) => setSrcImage(image)}
+            >
+                {imageData && (
+                    <Image
+                        src={imageData}
+                        height={imgHeight}
+                        width={imgWidth}
+                    />
+                )}
+            </Dropzone>
+        </Wrapper>
+    );
 };
